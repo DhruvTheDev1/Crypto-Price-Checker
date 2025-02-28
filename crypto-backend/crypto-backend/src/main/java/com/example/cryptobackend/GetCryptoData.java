@@ -10,51 +10,54 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class GetCryptoData {
 
-  //testing getCryptoPrice
-public static void main(String[] args) throws Exception {
-  GetCryptoData fetchDataTest = new GetCryptoData();
+  // test method
+  // testing getcrypto price
+  // CoinGecko API - get coin price by id
+  public static void main(String[] args) throws Exception {
+    GetCryptoData fetchDataTest = new GetCryptoData();
 
-  String id = "bitcoin";
-  String currency = "gbp";
+    String id = "bitcoin";
+    String currency = "gbp";
 
-  CryptoData test = fetchDataTest.getCryptoPrice(id, currency);
-  System.out.println(test.getCryptoId());
-  System.out.println(test.getCurrency());
+    CryptoData test = fetchDataTest.getCryptoPrice(id, currency);
+    System.out.println(test.getCryptoId());
+    System.out.println(test.getCurrency());
+  }
 
-
-}
-  public CryptoData getCryptoPrice(String cryptoId, String vs_currencies) throws Exception {
+  // calls CoinGecko API - Coin Price by IDs
+  // cryptoId - id of crypto coin, currency - also price of crypto coin
+  public CryptoData getCryptoPrice(String cryptoId, String currency) throws Exception {
 
     HttpRequest getRequest = HttpRequest.newBuilder()
         .uri(new URI(
-            ""))
+            "" + currency))
         .method("GET", HttpRequest.BodyPublishers.noBody())
         .build();
 
     HttpClient httpClient = HttpClient.newHttpClient();
+    HttpResponse<String> response = httpClient.send(getRequest,
+        HttpResponse.BodyHandlers.ofString());
 
-    HttpResponse<String> response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+    // System.out.println(response.body()); // test json print
 
-    // testing = prints json response
-    // System.out.println(response.body());
-
-    return parseResponse(response.body(), cryptoId, vs_currencies);
+    return parseResponse(response.body(), cryptoId, currency);
 
   }
 
-  public CryptoData parseResponse(String responseBody, String cryptoId, String vs_currencies) throws Exception {
+  public CryptoData parseResponse(String responseBody, String cryptoId, String currency) throws Exception {
 
     ObjectMapper objectMapper = new ObjectMapper();
-    JsonNode jsonNodeRoot = objectMapper.readTree(responseBody);
-
-    JsonNode currencyPrice = jsonNodeRoot.get(cryptoId);
-    String price = currencyPrice.get(vs_currencies).asText();
+    JsonNode JsonNodeRoot = objectMapper.readTree(responseBody);
+     
+    JsonNode currencyPrice = JsonNodeRoot.get(cryptoId); // gets currency of crypto coin
+    String price = currencyPrice.get(currency).asText(); 
 
     CryptoData cryptoData = new CryptoData();
     cryptoData.setCryptoId(cryptoId);
     cryptoData.setCurrency(price);
 
-    return cryptoData;
+    return cryptoData; // returns crypto id and currency 
 
   }
+
 }
