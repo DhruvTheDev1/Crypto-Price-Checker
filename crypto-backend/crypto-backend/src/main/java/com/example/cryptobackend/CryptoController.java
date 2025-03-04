@@ -1,31 +1,30 @@
 package com.example.cryptobackend;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-// testing on localhost 8080
+
 @RestController
+@RequestMapping("/api")
 public class CryptoController {
   private GetCryptoData getCryptoData;
 
-  public CryptoController() {
-    this.getCryptoData = new GetCryptoData();
+  @Autowired
+  public CryptoController(GetCryptoData getCryptoData) {
+    this.getCryptoData = getCryptoData;
   }
 
-  @GetMapping("/checkCryptoPrice")
-   public ResponseEntity<Map<String, Object>> getCryptoPrice(
-        @RequestParam String cryptoName, 
-        @RequestParam String cryptoCurrency
-    ) throws Exception {
-        CryptoData cryptoData = getCryptoData.getCryptoPrice(cryptoName, cryptoCurrency);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("price", cryptoData.getCurrency()); 
+  // request cryptoId, currency
+  @GetMapping("/CryptoPrice")
+  public ResponseEntity<String> getCryptoPrice(@RequestParam String cryptoId, @RequestParam String currency) throws Exception {
 
-        return ResponseEntity.ok(response);
-    }
+    CryptoData cryptoPrice = getCryptoData.getCryptoPrice(cryptoId, currency);
+    return ResponseEntity.ok(cryptoPrice.getCurrency()); // sends price
+
+
+  }
 }
