@@ -11,8 +11,8 @@ export default function Index() {
   // label - crypto name in menu
   // value - cryptoId - coingecko api
   const crypto = [
-    { label: 'Bitcoin', value: 'btc' },
-    { label: 'Ethereum', value: 'eth' },
+    { label: 'Bitcoin', value: 'bitcoin' },
+    { label: 'Ethereum', value: 'ethereum' },
     { label: 'XRP', value: 'ripple' },
     { label: 'Tether', value: 'tether' },
     { label: 'BNB', value: 'binancecoin' },
@@ -27,9 +27,20 @@ export default function Index() {
   const [selectedCrypto, setSelectedCrypto] = useState(null);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
 
-  const handleSubmit = () => {
-    console.log("Works");
-  }
+  const handleSubmit = async () => {
+    if (!selectedCrypto || !selectedCurrency) {
+      console.warn("Cannot be empty");
+      return;
+    }
+    const url = `ipaddress/api/CryptoPrice?cryptoId=${selectedCrypto}&currency=${selectedCurrency}`;
+    try {
+      const response = await fetch(url);
+      const cryptoData = await response.json();
+      console.log(selectedCrypto + ":", cryptoData + " " + selectedCurrency);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
     <View style={[styles.container, { backgroundColor }]}>
@@ -57,10 +68,10 @@ export default function Index() {
         value={selectedCurrency}
         onChange={item => setSelectedCurrency(item.value)} 
       />
-   {/* Simple submit button */}
-   <TouchableOpacity onPress={handleSubmit}>
-        <Text style={styles.submitButton}>Check Price</Text>
-      </TouchableOpacity>
+   
+   <TouchableOpacity onPress={handleSubmit} style={[styles.submitButton]}>
+  <Text style={[styles.submitText, { color: textColor }]}>Check Price</Text>
+</TouchableOpacity>
     </View>
   );
 }
@@ -86,10 +97,20 @@ const styles = StyleSheet.create({
   selectedTextStyle: {
     fontSize: 16,
   },
-submitButton: {
+  submitButton: {
     fontSize: 18,
-    color: "white",
-    textDecorationLine: "underline",
-    marginTop: 20,  
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    borderWidth: 1,  
+    borderColor: 'gray', 
+
   },
+  
+  submitText: {
+    fontSize: 18,
+    textAlign: "center", 
+  }
+
 });
