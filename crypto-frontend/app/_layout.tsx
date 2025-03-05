@@ -9,12 +9,13 @@ export default function RootLayout() {
     return (
       <Stack
         screenOptions={{
+          //headerShown: false,
           headerStyle: { backgroundColor },
           headerTintColor: textColor,
           contentStyle: { backgroundColor },
         }}
       >
-        <Stack.Screen name="index" options={{ title: "Crypto Price" }} />
+        <Stack.Screen name="index" options={{ title: "Crypto Price Checker" }} />
       </Stack>
     );
 }

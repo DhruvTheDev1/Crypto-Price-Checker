@@ -5,24 +5,27 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Service
 public class GetCryptoData {
 
   // test method
   // testing getcrypto price
   // CoinGecko API - get coin price by id
-  public static void main(String[] args) throws Exception {
-    GetCryptoData fetchDataTest = new GetCryptoData();
+  // public static void main(String[] args) throws Exception {
+  //   GetCryptoData fetchDataTest = new GetCryptoData();
 
-    String id = "bitcoin";
-    String currency = "gbp";
+  //   String id = "bitcoin";
+  //   String currency = "gbp";
 
-    CryptoData test = fetchDataTest.getCryptoPrice(id, currency);
-    System.out.println(test.getCryptoId());
-    System.out.println(test.getCurrency());
-  }
+  //   CryptoData test = fetchDataTest.getCryptoPrice(id, currency);
+  //   System.out.println(test.getCryptoId());
+  //   System.out.println(test.getCurrency());
+  // }
 
   // calls CoinGecko API - Coin Price by IDs
   // cryptoId - id of crypto coin, currency - also price of crypto coin
@@ -30,7 +33,7 @@ public class GetCryptoData {
 
     HttpRequest getRequest = HttpRequest.newBuilder()
         .uri(new URI(
-            "" + currency))
+            currency))
         .method("GET", HttpRequest.BodyPublishers.noBody())
         .build();
 

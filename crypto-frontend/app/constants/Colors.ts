@@ -1,6 +1,7 @@
 const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
-
+// colours used in the app
+// light and dark mode
 export const Colors = {
   light: {
     text: '#11181C',
