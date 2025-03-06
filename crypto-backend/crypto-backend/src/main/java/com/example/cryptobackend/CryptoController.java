@@ -21,10 +21,7 @@ public class CryptoController {
   // request cryptoId, currency
   @GetMapping("/CryptoPrice")
   public ResponseEntity<String> getCryptoPrice(@RequestParam String cryptoId, @RequestParam String currency) throws Exception {
-
     CryptoData cryptoPrice = getCryptoData.getCryptoPrice(cryptoId, currency);
     return ResponseEntity.ok(cryptoPrice.getCurrency()); // sends price
-
-
   }
 }

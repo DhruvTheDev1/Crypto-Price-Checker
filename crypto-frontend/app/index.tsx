@@ -32,7 +32,7 @@ export default function Index() {
       console.warn("Cannot be empty");
       return;
     }
-    const url = `ipaddress/api/CryptoPrice?cryptoId=${selectedCrypto}&currency=${selectedCurrency}`;
+    const url = `ipaddress8080/api/CryptoPrice?cryptoId=${selectedCrypto}&currency=${selectedCurrency}`;
     try {
       const response = await fetch(url);
       const cryptoData = await response.json();
