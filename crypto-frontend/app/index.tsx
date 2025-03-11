@@ -24,19 +24,27 @@ export default function Index() {
     { label: 'USD', value: 'usd' },
   ]
 
-  const [selectedCrypto, setSelectedCrypto] = useState(null);
-  const [selectedCurrency, setSelectedCurrency] = useState(null);
+  const [selectedCrypto, setSelectedCrypto] = useState(null); // selected crypto coin
+  const [selectedCurrency, setSelectedCurrency] = useState(null); // selected currency
+  const [cryptoPrice, setCryptoPrice] = useState<String | null>(null); // fetched crypto price
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // error message
+
+
 
   const handleSubmit = async () => {
+    setErrorMessage(null);
     if (!selectedCrypto || !selectedCurrency) {
-      console.warn("Cannot be empty");
+      setErrorMessage("Cannot be empty");
+     // console.warn("Cannot be empty");
       return;
     }
-    const url = `/api/CryptoPrice?cryptoId=${selectedCrypto}&currency=${selectedCurrency}`;
+    const url = `ipaddress:8080/api/CryptoPrice?cryptoId=${selectedCrypto}&currency=${selectedCurrency}`;
     try {
       const response = await fetch(url);
       const cryptoData = await response.json();
-      console.log(selectedCrypto + ":", cryptoData + " " + selectedCurrency);
+     // console.log(selectedCrypto + ":", cryptoData + " " + selectedCurrency);
+     // setCryptoPrice(String(cryptoData)); // displays only price in UI
+     setCryptoPrice(`${selectedCrypto}: ${cryptoData} ${selectedCurrency}`); // Store price in state
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -54,7 +62,7 @@ export default function Index() {
         valueField="value" 
         placeholder="Select Crypto"
         value={selectedCrypto}
-        onChange={item => setSelectedCrypto(item.value)}
+        onChange={crypto => setSelectedCrypto(crypto.value)}
       />
 
 <Dropdown
@@ -66,12 +74,18 @@ export default function Index() {
         valueField="value" 
         placeholder="Select Currency"
         value={selectedCurrency}
-        onChange={item => setSelectedCurrency(item.value)} 
+        onChange={currency => setSelectedCurrency(currency.value)} 
       />
    
    <TouchableOpacity onPress={handleSubmit} style={[styles.submitButton]}>
-  <Text style={[styles.submitText, { color: textColor }]}>Check Price</Text>
-</TouchableOpacity>
+        <Text style={[styles.submitText, { color: textColor }]}>Check Price</Text>
+      </TouchableOpacity>
+
+      {/* crypto price */}
+      {cryptoPrice && <Text style={[styles.priceText, { color: textColor }]}>{cryptoPrice}</Text>}
+
+      {/* Error message */}
+      {errorMessage && <Text style={[styles.errorText, { color: "red" }]}>{errorMessage}</Text>}
     </View>
   );
 }
@@ -107,10 +121,18 @@ const styles = StyleSheet.create({
     borderColor: 'gray', 
 
   },
-  
   submitText: {
     fontSize: 18,
     textAlign: "center", 
+  },
+  priceText: {
+    fontSize: 20,
+    marginTop: 20,
+    fontWeight: "bold",
+  },
+  errorText: {
+    fontSize: 16,
+    marginTop: 10,
+    fontWeight: "bold",
   }
-
 });
