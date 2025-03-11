@@ -29,8 +29,6 @@ export default function Index() {
   const [cryptoPrice, setCryptoPrice] = useState<String | null>(null); // fetched crypto price
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // error message
 
-
-
   const handleSubmit = async () => {
     setErrorMessage(null);
     if (!selectedCrypto || !selectedCurrency) {
@@ -46,7 +44,9 @@ export default function Index() {
      // setCryptoPrice(String(cryptoData)); // displays only price in UI
      setCryptoPrice(`${selectedCrypto}: ${cryptoData} ${selectedCurrency}`); // Store price in state
     } catch (error) {
-      console.error("Error fetching data:", error);
+     // console.error("Error fetching data:", error);
+     setErrorMessage("Error fetching price");
+
     }
   };
 
@@ -56,7 +56,8 @@ export default function Index() {
       <Dropdown
         style={[styles.dropdown, { backgroundColor }]} 
         placeholderStyle={[styles.placeholderStyle, { color: textColor }]} 
-        selectedTextStyle={[styles.selectedTextStyle, { color: textColor }]} //
+        selectedTextStyle={[styles.selectedTextStyle, { color: textColor }]}
+        
         data={crypto}
         labelField="label" 
         valueField="value" 
