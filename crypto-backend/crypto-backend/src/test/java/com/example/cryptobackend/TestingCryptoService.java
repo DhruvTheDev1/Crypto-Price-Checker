@@ -1,8 +1,6 @@
 package com.example.cryptobackend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.net.http.HttpResponse;
@@ -37,4 +35,6 @@ public class TestingCryptoService {
     assertEquals("68571", test.getCurrency());
     assertEquals("bitcoin", test.getCryptoId());
   }
+
+  
 }

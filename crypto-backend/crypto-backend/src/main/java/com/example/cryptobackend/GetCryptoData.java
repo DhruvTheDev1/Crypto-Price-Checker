@@ -5,6 +5,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -12,30 +13,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class GetCryptoData {
+@Value("${api.url}")
+private String apiUrl;
 
-  // test method
-  // testing getcrypto price
-  // CoinGecko API - get coin price by id
-  // public static void main(String[] args) throws Exception {
-  // GetCryptoData fetchDataTest = new GetCryptoData();
-
-  // String id = "bitcoin";
-  // String currency = "gbp";
-
-  // CryptoData test = fetchDataTest.getCryptoPrice(id, currency);
-  // System.out.println(test.getCryptoId());
-  // System.out.println(test.getCurrency());
-  // }
-
-  // calls CoinGecko API - Coin Price by IDs
-  // cryptoId - id of crypto coin, currency - also price of crypto coin
   public CryptoData getCryptoPrice(String cryptoId, String currency) throws Exception {
 
+    String url = apiUrl.replace("{cryptoId}", cryptoId).replace("{currency}", currency);
+
     HttpRequest getRequest = HttpRequest.newBuilder()
-        .uri(new URI(
-            currency))
-        .method("GET", HttpRequest.BodyPublishers.noBody())
-        .build();
+    .uri(new URI(url))
+    .GET()
+    .build();
 
     HttpClient httpClient = HttpClient.newHttpClient();
     HttpResponse<String> response = httpClient.send(getRequest,

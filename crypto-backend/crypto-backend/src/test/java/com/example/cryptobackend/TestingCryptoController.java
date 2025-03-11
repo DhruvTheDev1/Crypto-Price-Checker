@@ -1,7 +1,6 @@
 package com.example.cryptobackend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -30,6 +29,7 @@ public class TestingCryptoController {
 
     ResponseEntity<String> response = cryptoController.getCryptoPrice("bitcoin", "gbp");
 
+    assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals("70,223.99", response.getBody());
 
   }
@@ -45,6 +45,7 @@ public class TestingCryptoController {
     // ResponseEntity<String> response = cryptoController.getCryptoPrice("bitcoin",
     // "gbp"); // crypto price is null
 
+    assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals("1,775.29", response.getBody());
   }
 
